@@ -1,5 +1,5 @@
 {
-  "name": "acl",
+  "name": "accessible",
   "version": "0.0.1",
   "description": "",
   "main": "./lib/acl.js",
