@@ -2,9 +2,6 @@ var acl = require('../');
 
 var controlList = {
   "/tournaments": {
-    getRole: function getUserRole (req, done){
-      done(undefined, 'organizer');
-    },
     get: ["admin", "organizer"],
     put: ["admin", "organizer"],
     post: ["admin", "organizer"],
