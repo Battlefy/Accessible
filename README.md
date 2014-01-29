@@ -1,4 +1,4 @@
-# ACL Basic Usage:
+# Accessible Basic Usage:
 
 ```
   var controlList = {
