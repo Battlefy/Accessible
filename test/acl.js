@@ -44,7 +44,7 @@ describe('acl', function(){
   it('can call getUserRole when no role is already defined', function(done){
     var controlList = {
       "/tournaments": {
-        getUserRole: function getUserRole (req, callback){
+        getRole: function getUserRole (req, callback){
           done();
         },
         get: ["admin", "organizer"],
