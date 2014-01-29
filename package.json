@@ -1,0 +1,11 @@
+{
+  "name": "acl",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./lib/acl.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Battlefy <info@battlefy.com>",
+  "license": "ISC"
+}
