@@ -7,5 +7,9 @@
     "test": "mocha"
   },
   "author": "Battlefy <info@battlefy.com>",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "mocha": "~1.17.1",
+    "should": "~3.1.2"
+  }
 }

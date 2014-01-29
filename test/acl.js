@@ -1,7 +1,4 @@
-var acl = require('../../lib/acl');
-
-
-var Tournament
+var acl = require('../');
 
 var controlList = {
   "admin": {
@@ -23,11 +20,11 @@ var controlList = {
   },
 }
 
-describe.only('acl', function(){
+describe('acl', function(){
 
   it('can be instantiated with a controlList', function(){
     var middleware = acl(controlList);
-    middleware.should.be.a('function');
+    middleware.should.be.type('function');
   });
 
   it('can handle an admin route to GET /tournaments', function(done){
