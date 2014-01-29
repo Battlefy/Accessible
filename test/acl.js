@@ -1,23 +1,15 @@
 var acl = require('../');
 
 var controlList = {
-  "admin": {
-    "/tournaments": {
-      get: true,
-      delete: false,
-      post: true,
-      put: function(req, done) {
-        done(undefined, true);
-      }
-    }
-  },
-  "organizer": {
-    "/tournaments/:id": {
-      get: true,
-      delete: false,
-      post: true
-    }
-  },
+  "/tournaments": {
+    getUserRole: function getUserRole (req, done){
+      done(undefined, 'organizer');
+    },
+    get: ["admin", "organizer"],
+    put: ["admin", "organizer"],
+    post: ["admin", "organizer"],
+    delete: ["admin", "organizer"]
+  }
 }
 
 describe('acl', function(){
@@ -27,20 +19,55 @@ describe('acl', function(){
     middleware.should.be.type('function');
   });
 
-  it('can handle an admin route to GET /tournaments', function(done){
+  it('can handle a role already defined', function(done){
     var middleware = acl(controlList);
-    var req = { url: '/tournaments', method: 'GET', route: { path: '/tournaments' }};
-    var res = { end: done }
-    req.user =  { role: 'admin' };
-    middleware(req, res, done);
+    var res = {
+      send: function() {},
+      end: function() {}
+    }
+    var req = {
+      url: '/tournaments',
+      method: 'GET',
+      route: { path: '/tournaments' },
+      user: {
+        _id: 1,
+        role: 'admin'
+      }
+    };
+    var noop = function(err) {
+      if(err) {throw err}
+      done();
+    }
+    middleware(req, res, noop);
   });
 
-  it('can handle an async admin route to PUT /tournaments', function(done){
+  it('can call getUserRole when no role is already defined', function(done){
+    var controlList = {
+      "/tournaments": {
+        getUserRole: function getUserRole (req, callback){
+          done();
+        },
+        get: ["admin", "organizer"],
+        put: ["admin", "organizer"],
+        post: ["admin", "organizer"],
+        delete: ["admin", "organizer"]
+      }
+    }
     var middleware = acl(controlList);
-    var req = { url: '/tournaments', method: 'PUT', route: { path: '/tournaments' }};
-    var res = { end: done }
-    req.user =  { role: 'admin' };
-    middleware(req, res, done);
+    var res = {
+      send: function() {},
+      end: function() {}
+    }
+    var req = {
+      url: '/tournaments',
+      method: 'GET',
+      route: { path: '/tournaments' },
+      user: {
+        _id: 1
+      }
+    };
+    var noop = function(err) {}
+    middleware(req, res, noop);
   });
 
 });
