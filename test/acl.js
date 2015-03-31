@@ -177,7 +177,7 @@ describe('acl', function(){
     var middleware = acl(controlList);
     var res = {
       send: function(statusCode, body) {
-        statusCode.should.equal(402);
+        statusCode.should.equal(401);
         body.error.should.equal('Not Authorized');
         done();
       },
@@ -191,9 +191,39 @@ describe('acl', function(){
         _id: 1
       }
     };
-    var next = function(err) {
-    }
+    var next = function(err) {};
+
     middleware(req, res, next);
   });
 
+
+  it('handles the case where * is provided instead of a list of allowed roles', function(done) {
+
+    var controlList = {
+      "/thing": {
+        getRole: function(req, cb) { cb(undefined, 'doesnt matter'); },
+        get: '*'
+      }
+    };
+
+    var middleware = acl(controlList);
+
+    var res = {};
+
+    var req = {
+      url: '/thing',
+      method: 'GET',
+      route: { path: '/thing' },
+      user: {
+        _id: 11231231
+      }
+    };
+
+    var next = function(err) {
+      (err === undefined).should.be.OK;
+      done();
+    };
+
+    middleware(req, res, next);
+  });
 });
